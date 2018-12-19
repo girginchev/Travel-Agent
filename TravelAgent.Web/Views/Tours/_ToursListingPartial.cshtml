@@ -1,0 +1,176 @@
+﻿@model ToursViewModel
+
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+            <li style="background-image: url(/images/adventure-attraction-blurry-618545.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                            <div class="slider-text-inner text-center">
+                                <h2>by colorlib.com</h2>
+                                <h1>Find Tours</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+<div class="colorlib-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+
+                    @foreach (var tour in Model.Tours)
+                    {
+                        <div class="wrap-division">
+                            <div class="col-md-6 col-sm-6 animate-box">
+                                <div class="tour">
+
+                                    @{
+                                        var base64 = Convert.ToBase64String(tour.HeaderImage);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                    }
+
+                                    <a asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="tour-img" style="background-image: url(@imgSrc)">
+                                        <p class="price"><span>$@tour.LowestPrice</span> <small>/ @tour.TourDaysCount Days</small></p>
+                                    </a>
+                                    <span class="desc">
+                                        @*<p class="star"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span> 545 Reviews</p>*@
+                                        <a asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()"><h4>@tour.Title</h4></a>
+                                        <span class="city">@tour.Destination</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <ul class="pagination">
+                            <li class="@(Model.CurrentPage == 1 ? "disabled" : string.Empty)"><a asp-route-page="@Model.PreviousPage">&laquo;</a></li>
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(Model.CurrentPage == @i ? "active" : string.Empty)"><a asp-route-page="@i">@i</a></li>
+                            }
+                            <li class="@(Model.CurrentPage == Model.TotalPages ? "disabled" : string.Empty)"><a asp-route-page="@Model.NextPage">&raquo;</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- SIDEBAR-->
+            <div class="col-md-3">
+                <div class="sidebar-wrap">
+                    <div class="side animate-box">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="sidebar-heading">Calendar</h3>
+                                <form method="post" class="colorlib-form">
+                                    <div class="row">
+                                        @{
+                                            var currentMonth = DateTime.UtcNow.Month;
+                                        }
+                                        @for (int i = currentMonth; i <= 12; i++)
+                                        {
+                                            <div class="col-md-6">
+                                                <div class="form-group text-center">
+                                                    <a asp-controller="Tours" asp-action="ByMonth" asp-route-month="@i">@System.Globalization.DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</a>
+                                                </div>
+                                            </div>
+                                        }
+                                        @for (int i = 1; i < currentMonth; i++)
+                                        {
+                                            <div class="col-md-6">
+                                                <div class="form-group text-center">
+                                                    <a asp-controller="Tours" asp-action="ByMonth" asp-route-month="@i">@System.Globalization.DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</a>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="side search-wrap animate-box">
+                        <h3 class="sidebar-heading">Search by key word</h3>
+                        <form method="post" class="colorlib-form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="date">Search</label>
+                                        <div class="form-field">
+                                            <input type="text" name="searchTerm" class="form-control" placeholder="Search">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="submit" asp-controller="Tours" asp-action="Search" asp-route-searchTerm="searchTerm" value="Search in tours">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="side animate-box">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="sidebar-heading">Price Range</h3>
+                                <form method="post" class="colorlib-form-2">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="guests">Price from:</label>
+                                                <div class="form-field">
+                                                    <i class="icon icon-arrow-down3"></i>
+                                                    <select name="priceFrom" id="people" class="form-control">
+                                                        <option value="1">1</option>
+                                                        <option value="200">200</option>
+                                                        <option value="300">300</option>
+                                                        <option value="400">400</option>
+                                                        <option value="1000">1000</option>
+                                                        <option value="1000">2000</option>
+                                                        <option value="1000">3000</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="guests">Price to:</label>
+                                                <div class="form-field">
+                                                    <i class="icon icon-arrow-down3"></i>
+                                                    <select name="priceTo" id="people" class="form-control">
+                                                        <option value="2000">200</option>
+                                                        <option value="4000">400</option>
+                                                        <option value="6000">600</option>
+                                                        <option value="8000">800</option>
+                                                        <option value="10000">1000</option>
+                                                        <option value="10000">2000</option>
+                                                        <option value="10000">6000</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <input type="submit" asp-controller="Tours" asp-action="SearchByPrice" asp-route-priceFrom="priceFrom" asp-route-priceTo="priceFrom" value="Find Tour" class="btn btn-primary btn-block">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+
+<div class="gototop js-top">
+    <a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
+</div>

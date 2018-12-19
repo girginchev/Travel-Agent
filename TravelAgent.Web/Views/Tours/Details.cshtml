@@ -1,0 +1,283 @@
+﻿@model TourDetailsServiceModel
+
+
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+            @{
+                var base64 = Convert.ToBase64String(Model.HeaderImage);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            }
+            <li style="background-image: url(@imgSrc);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                            <div class="slider-text-inner text-center">
+                                <h2>by colorlib.com</h2>
+                                <h1>@Model.Title</h1>
+                                @if (User.IsInRole(WebConstants.AdministratorRole))
+                                {
+                                    <a asp-area="Admin" asp-controller="EditTour" asp-action="EditHeader" asp-route-id="@Model.Id" class="btn btn-sm">Edit</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <h1 class="text-center colorlib-bg">Dates and Prices</h1>
+            <table class="table table-bordered rwd-table">
+                <thead>
+                    <tr>
+                        <th>Dates</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var trip in Model.Trips)
+                    {
+                        <tr>
+                            <th>@trip.StartDate.ToShortDateString() - @trip.EndDate.ToShortDateString()</th>
+                            <th>@trip.Price лв.</th>
+                            <th>
+                                <a asp-controller="Reservations" asp-action="AddReservation" asp-route-id="@trip.Id" class="btn btn-primary btn-sm">Book</a>
+                            </th>
+                            @if (User.IsInRole(WebConstants.AdministratorRole))
+                            {
+                                <th>
+                                    <a asp-area="Admin" asp-controller="EditTour" asp-action="EditTrip" asp-route-id="@Model.Id" asp-route-tripId="@trip.Id" class="btn btn-sm">Edit</a>
+                                </th>
+                            }
+                            @if (User.IsInRole(WebConstants.AdministratorRole))
+                            {
+                                <th>
+                                    <a asp-area="Admin" asp-controller="Tours" asp-action="DeleteTrip" asp-route-id="@Model.Id" asp-route-tripId="@trip.Id" class="btn-sm btn-danger">Delete Trip</a>
+                                </th>
+                            }
+                            @if (User.IsInRole(WebConstants.AdministratorRole))
+                            {
+                                <th>
+                                    <a asp-area="Admin" asp-controller="Tours" asp-action="SetAvailableSeats" asp-route-id="@Model.Id" asp-route-tripId="@trip.Id" class="btn btn-sm btn-primary">Bus</a>
+                                </th>
+                            }
+                            @if (User.IsInRole(WebConstants.AdministratorRole))
+                            {
+                                <th>
+                                    <a asp-area="Admin" asp-controller="Reservations" asp-action="All" asp-route-tripId="@trip.Id" class="btn btn-sm btn-primary">Reservations</a>
+                                </th>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (User.IsInRole(WebConstants.AdministratorRole))
+            {
+                <div class="col-md-12 animate-box text-center">
+                    <p><a asp-area="Admin" asp-controller="Tours" asp-action="AddTrip" asp-route-id="@Model.Id" class="btn btn-sm">Add Trip</a></p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="colorlib-wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="wrap-division">
+                            <div class="col-md-12 col-md-offset-0 heading2 animate-box">
+                                <h2>@Html.Raw(Model.Description)</h2>
+                            </div>
+
+
+                            <div class="row">
+                                @{
+                                    int i = 1;
+                                }
+                                @foreach (var day in Model.TourDays)
+                                {
+                                    var base64Day = Convert.ToBase64String(day.DayPicture);
+                                    var imgSrcDay = String.Format("data:image/gif;base64,{0}", base64Day);
+                                    <div class="col-md-12 animate-box">
+                                        <div class="room-wrap">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="room-img" style="background-image: url(@imgSrcDay);"></div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="desc">
+                                                        <span class="day-tour">Day @i</span>
+                                                        <h2>@day.DayTitle</h2>
+                                                        <p>@day.DayDescription</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if (User.IsInRole(WebConstants.AdministratorRole))
+                                            {
+                                                <a asp-area="Admin" asp-controller="EditTour" asp-action="EditTourDay" asp-route-id="@Model.Id" asp-route-tourDayId="@i" class="btn btn-sm">Edit Day</a>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    i++;
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="wrap-division">
+                            <div class="col-md-12 col-md-offset-0 heading2 animate-box">
+                                <h3 class="sidebar-heading">Additional Services</h3>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @{
+                                            int j = 1;
+                                        }
+                                        @foreach (var addService in Model.AdditionalSevices)
+                                        {
+                                            <table style="width:100%" class="regtxtA">
+                                                <tbody>
+                                                    <tr>
+                                                        <td rowspan="2">@addService.Content</td>
+                                                        <td width="80" align="right">
+                                                            <div class="monospace">
+                                                                <b>@addService.Price.ToString("F2") лв.</b>
+                                                            </div>
+                                                        </td>
+                                                        @if (User.IsInRole(WebConstants.AdministratorRole))
+                                                        {
+                                                            <td>
+
+                                                                <a asp-area="Admin" asp-controller="EditTour" asp-action="EditAdditionalService" asp-route-id="@Model.Id" asp-route-serviceId="@j" class="btn btn-sm">Edit Service</a>
+
+                                                            </td>
+                                                        }
+                                                        @if (User.IsInRole(WebConstants.AdministratorRole))
+                                                        {
+                                                            <td>
+
+                                                                <a asp-area="Admin" asp-controller="Tours" asp-action="DeleteService" asp-route-id="@Model.Id" asp-route-serviceId="@addService.Id" class="btn-sm btn-danger">Delete Service</a>
+
+                                                            </td>
+                                                        }
+                                                </tbody>
+                                            </table>
+                                            j++;
+                                        }
+                                        @if (User.IsInRole(WebConstants.AdministratorRole))
+                                        {
+                                            <a asp-area="Admin" asp-controller="Tours" asp-action="AddAdditionalService" asp-route-id="@Model.Id" class="btn btn-sm">Add Service</a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- SIDEBAR-->
+            @{
+                var priceIncludes = new List<string>();
+                var priceDoesNotIncludes = new List<string>();
+                if (Model.PriceIncludes != null)
+                {
+                    priceIncludes = Model.PriceIncludes.Split(Environment.NewLine).ToList();
+                }
+
+                if (Model.PriceDoesNotIncludes != null)
+                {
+                    priceDoesNotIncludes = Model.PriceDoesNotIncludes.Split(Environment.NewLine).ToList();
+                }
+            }
+            <div class="col-md-3">
+                <div class="sidebar-wrap">
+                    <div class="side search-wrap animate-box" style="background-color: #43864f">
+                        <h3 class="sidebar-heading">Price includes</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @foreach (var tag in priceIncludes)
+                                {
+                                    <label class="form-group">=>  @tag</label>
+                                }
+                            </div>
+                        </div>
+                        @if (User.IsInRole(WebConstants.AdministratorRole))
+                        {
+                            <a asp-area="Admin" asp-controller="EditTour" asp-action="EditPriceIncludes" asp-route-id="@Model.Id" class="btn btn-sm">Edit Price Includes</a>
+                        }
+                    </div>
+                    <div class="side search-wrap animate-box" style="background-color:#979262">
+                        <h3 class="sidebar-heading">Price does not includes</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @foreach (var tag in priceDoesNotIncludes)
+                                {
+                                    <label class="form-group">=>  @tag</label>
+                                }
+                            </div>
+                        </div>
+                        @if (User.IsInRole(WebConstants.AdministratorRole))
+                        {
+                            <a asp-area="Admin" asp-controller="EditTour" asp-action="EditPriceDoesNotIncludes" asp-route-id="@Model.Id" class="btn btn-sm">Edit Price Doesn't Includes</a>
+                        }
+                    </div>
+                    <div class="side search-wrap animate-box">
+                        <h3 class="sidebar-heading">Useful Information</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="form-group">@Model.UsefulInformation</label>
+                            </div>
+                        </div>
+                        @if (User.IsInRole(WebConstants.AdministratorRole))
+                        {
+                            <a asp-area="Admin" asp-controller="EditTour" asp-action="EditUsefulInformation" asp-route-id="@Model.Id" class="btn btn-sm">Edit Information</a>
+                        }
+                    </div>
+                    @if (User.IsInRole(WebConstants.AdministratorRole))
+                    {
+                        <div class="side search-wrap animate-box">
+                            <form method="post" class="colorlib-form">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                            <label asp-for="DestinationType"></label>
+                                            <select asp-for="DestinationType" asp-items="Html.GetEnumSelectList<TourDestinationTypesServiceModel>()">
+                                                <option selected="selected" value="" >Please select</option>
+                                            </select>
+                                            <span asp-validation-for="DestinationType" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="submit" asp-area="Admin" asp-controller="EditTour" asp-action="EditDestinationType" asp-route-tourId="@Model.Id"  value="Change" class="btn btn-primary btn-block">
+                                </div>
+                            </form>
+                        </div>
+                    }
+
+                    <div class="form-group">
+
+                    </div>
+
+
+                </div>
+            </div>
+            @*<div class="col-md-12">
+                    useful info
+                </div>*@
+        </div>
+    </div>
+</div>
+

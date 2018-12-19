@@ -1,0 +1,52 @@
+﻿@model BusSeatsListingServiceModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS seat booking</title>
+
+    <link rel="stylesheet" href="~/css/bus-style.css">
+
+</head>
+<body>
+    <form method="post">
+            <div class="plane">
+                <div class="cockpit">
+                    <h1>Please select a seat</h1>
+                </div>
+                <div class="exit exit--front fuselage">
+
+                </div>
+                <ol class="cabin fuselage">
+            
+                    @for (int i = 0; i < Model.SeatNumbers.Count; i += 4)
+                    {
+                        <li class="row row--1">
+                            <ol class="seats" type="A">
+                                @for (int j = i; j < Math.Min((i + 4),Model.SeatNumbers.Count); j++)
+                                {
+                                <li class="seat">
+                                    <input asp-for="@Model.IsReserved[j]" type="checkbox" id="@Model.SeatNumbers[j]" />
+                                    <label for="@Model.SeatNumbers[j]">@Model.SeatNumbers[j]</label>
+                                    <input type="hidden" asp-for="@Model.SeatNumbers[j]" value="@Model.SeatNumbers[j]">
+                                    <input type="hidden" asp-for="@Model.SeatId[j]" value="@Model.SeatId[j]">
+                                    <input type="hidden" asp-for="@Model.BusId" value="@Model.BusId">
+                                </li>
+                                }
+                            </ol>
+                        </li>
+                    }
+                </ol>
+            </div>
+
+        <input type="submit" class="btn btn-danger" value="save">
+    </form>
+
+</body>
+</html>
+
+

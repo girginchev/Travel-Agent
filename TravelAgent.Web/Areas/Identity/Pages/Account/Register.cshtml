@@ -1,0 +1,39 @@
+﻿@*@page
+@model RegisterModel
+@{
+    viewdata["title"] = "register";
+}
+
+<h2>@viewdata["title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-route-returnurl="@model.returnurl" method="post">
+            <h4>create a new account.</h4>
+            <hr />
+            <div asp-validation-summary="all" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="input.email"></label>
+                <input asp-for="input.email" class="form-control" />
+                <span asp-validation-for="input.email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="input.password"></label>
+                <input asp-for="input.password" class="form-control" />
+                <span asp-validation-for="input.password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="input.confirmpassword"></label>
+                <input asp-for="input.confirmpassword" class="form-control" />
+                <span asp-validation-for="input.confirmpassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="nextbtn" value='next' class="btn btn-default">next</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts {
+    <partial name="_validationscriptspartial" />
+}*@

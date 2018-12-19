@@ -1,0 +1,67 @@
+﻿@model ReservationsListingViewModel
+
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+            <li style="background-image: url(/images/tr10.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                            <div class="slider-text-inner text-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+<div id="colorlib-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 animate-box">
+                <form action="#">
+                    @for (int i = 0; i < Model.Reservations.Count; i++)
+                    {
+                        <h3>@Model.Reservations[i].Id</h3>
+                        <h3>@Model.Reservations[i].ReservationTime></h3>
+                        <div class="row form-group">
+                            <div class="col-md-6 padding-bottom">
+                                <label>First Name</label>
+                                <input asp-for="@Model.Reservations[i].TouristFirstName" type="text" disabled="disabled" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Last Name</label>
+                                <input type="text" disabled="disabled" asp-for="@Model.Reservations[i].TouristLastName" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-6 padding-bottom">
+                                <label>Seat Number</label>
+                                <input type="text" disabled="disabled" asp-for="@Model.Reservations[i].SeatNumber" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Payment performed?</label>
+                                <input type="text" disabled="disabled" value="@(Model.Reservations[i].IsFinalized == true ? "Yes" : "No")" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <input asp-action="Details" asp-route-id="@Model.Reservations[i].Id" type="submit" value="Details" class="btn btn-primary">
+                        </div>
+                    }
+                </form>
+
+                <fieldset>
+                    <ul>
+                        <li>
+                            <a asp-action="Report" asp-controller="Reservations" asp-route-tripId="@Model.TripId">Export to Excel All Reservations</a>
+                        </li>
+                    </ul>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</div>
+
+

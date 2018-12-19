@@ -1,0 +1,307 @@
+﻿@model AddReservationServiceModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="~/css/bus-style.css">
+    <link rel="stylesheet" href="~/css/steps-style.css">
+
+</head>
+<body>
+    <link href="https://fonts.googleapis.com/css?family=Lato|Oswald" rel="stylesheet">
+    <header class="header">
+        <div class="container">
+            <h1>@Model.TourTitle</h1>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <form id="my-form" name="my-form" method="post" asp-action="AddReservation" class="form form--stepped validate">
+                <fieldset class="step" id="step-1">
+                    <legend class="hidden">Start</legend>
+                    <h3>Contact Data</h3>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <ul class="form__two-cols">
+                        <li class="required">
+                            <label asp-for="Email"></label>
+                            <input asp-for="Email" maxlength="100" type="email" required="required" class="form-control" placeholder="Enter your email address" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="Password"></label>
+                            <input asp-for="Password" maxlength="100" type="password" id="password" name="password" required="required" class="form-control" placeholder="Enter your password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+
+
+                        </li>
+                        <li class="required">
+                            <label asp-for="ConfirmPassword"></label>
+                            <input asp-for="ConfirmPassword" maxlength="100" type="password" id="confirm" name="confirm" required="required" class="form-control" placeholder="Re-type your password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="EGN"></label>
+                            <input asp-for="EGN" maxlength="100" type="text" id="egn" name="egn" required="required" class="form-control" placeholder="Enter your Id number" />
+                            <span asp-validation-for="EGN" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="Phone"></label>
+                            <input asp-for="Phone" maxlength="100" type="text" required="required" class="form-control" placeholder="Enter your phone number" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </li>
+                    </ul>
+                </fieldset>
+                <fieldset class="step" id="step-2">
+                    <legend class="hidden">Seat Reservation</legend>
+                    <h3>Seat Reservation</h3>
+                    <div class="plane">
+                        <div class="exit exit--front fuselage">
+                        </div>
+                        <ol class="cabin fuselage">
+                            <div id="radiocb" onclick="cbclick(event)">
+                                @for (int i = 0; i < Model.SeatNumbers.Count; i += 4)
+                                {
+                                    <li class="row row--1">
+                                        <ol class="seats" type="A">
+                                            @for (int j = i; j < Math.Min((i + 4), Model.SeatNumbers.Count); j++)
+                                            {
+                                                <li class="seat">
+                                                    <input class="chb" asp-for="IsReserved[j]" type="checkbox" disabled="@(Model.IsReserved[j] == true ? true : false)" id="@Model.SeatNumbers[j]" />
+                                                    <label for="@Model.SeatNumbers[j]">@Model.SeatNumbers[j]</label>
+                                                    <input type="hidden" asp-for="@Model.SeatId[j]" value="@Model.SeatId[j]">
+                                                    <input type="hidden" asp-for="@Model.TripId" value="@Model.TripId">
+                                                    <input type="hidden" asp-for="@Model.BusId" value="@Model.BusId">
+                                                </li>
+                                            }
+                                        </ol>
+                                    </li>
+                                }
+                            </div>
+                        </ol>
+                    </div>
+                </fieldset>
+                <fieldset class="step" id="step-3">
+                    <legend class="hidden">Add Additional Services</legend>
+                    <h3>Add Additional Services</h3>
+                    <ul>
+                        <li class="required">
+                            @for (int i = 0; i < Model.AdditionalServices.Count; i++)
+                            {
+                                <div class="form-group">
+                                    <div class="row">
+                                        <input asp-for="@Model.AdditionalServices[i].IsSelected" type="checkbox" name="product" id="product" value="@Model.AdditionalServices[i].Price" onclick="totalIt()">
+                                        <label asp-for="@Model.AdditionalServices[i].Content">@Model.AdditionalServices[i].Content: </label>
+                                        <label asp-for="@Model.AdditionalServices[i].Price">@Model.AdditionalServices[i].Price лева</label>
+                                        <input type="hidden" asp-for="@Model.AdditionalServices[i].Content" value="@Model.AdditionalServices[i].Content">
+                                        <input type="hidden" asp-for="@Model.AdditionalServices[i].Price" value="@Model.AdditionalServices[i].Price">
+                                        <input type="hidden" asp-for="@Model.AdditionalServices[i].Id" value="@Model.AdditionalServices[i].Id">
+                                    </div>
+                                </div>
+                            }
+                        </li>
+                    </ul>
+                </fieldset>
+                <fieldset class="step" id="step-4">
+                    <legend class="hidden">Traveller Information</legend>
+                    <h3>Traveller Information</h3>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <ul>
+                        <li class="required">
+                            <label asp-for="FirstNameCyrilic"></label>
+                            <input asp-for="FirstNameCyrilic" maxlength="100" type="text" required="required" class="form-control" />
+                            <span asp-validation-for="FirstNameCyrilic" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="SurNameCyrilic"></label>
+                            <input asp-for="SurNameCyrilic" maxlength="100" type="text" required="required" class="form-control" />
+                            <span asp-validation-for="SurNameCyrilic" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="LastNameCyrilic"></label>
+                            <input asp-for="LastNameCyrilic" maxlength="100" type="text" required="required" class="form-control" />
+                            <span asp-validation-for="LastNameCyrilic" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="FirstNameLatin"></label>
+                            <input asp-for="FirstNameLatin" maxlength="100" type="text" required="required" class="form-control" />
+                            <span asp-validation-for="FirstNameLatin" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="SurNameLatin"></label>
+                            <input asp-for="SurNameLatin" maxlength="100" type="text" required="required" class="form-control" />
+                            <span asp-validation-for="SurNameLatin" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="LastNameLatin"></label>
+                            <input asp-for="LastNameLatin" maxlength="100" type="text" required="required" class="form-control" />
+                            <span asp-validation-for="LastNameLatin" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="PasportNumber"></label>
+                            <input asp-for="PasportNumber" maxlength="100" type="text" class="form-control" />
+                            <span asp-validation-for="PasportNumber" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="PasportDateOfIssue"></label>
+                            <input asp-for="PasportDateOfIssue" maxlength="100" type="date" class="form-control" />
+                            <span asp-validation-for="PasportDateOfIssue" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="PasportValidityDate"></label>
+                            <input asp-for="PasportValidityDate" maxlength="100" type="date" class="form-control" />
+                            <span asp-validation-for="PasportValidityDate" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="IdCard"></label>
+                            <input asp-for="IdCard" maxlength="100" type="text" required="required" class="form-control" />
+                            <span asp-validation-for="IdCard" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="IdCardDateOfIssue"></label>
+                            <input asp-for="IdCardDateOfIssue" maxlength="100" type="date" required="required" class="form-control" />
+                            <span asp-validation-for="IdCardDateOfIssue" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="IdCardValidityDate"></label>
+                            <input asp-for="IdCardValidityDate" maxlength="100" type="date" required="required" class="form-control" />
+                            <span asp-validation-for="IdCardValidityDate" class="text-danger"></span>
+                        </li>
+                        <li class="required">
+                            <label asp-for="Address"></label>
+                            <input asp-for="Address" maxlength="100" type="text" required="required" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                            <input type="hidden" asp-for="BasePrice" value="@Model.BasePrice">
+                            <input type="hidden" asp-for="TourTitle" value="@Model.TourTitle">
+                        </li>
+                    </ul>
+
+                    <p>
+                        <input asp-for="GDPRConfirm" required="required" type="checkbox"><label for="agree">Съгласен съм, предоставените от мен лични данни да бъдат обработвани от Travel Agent за целите, посочени в Общите условия.</label>
+                    </p>
+                    <p>
+                        <input asp-for="GDPRRead" required="required" type="checkbox"><label for="agree1">Прочетох и съм съгласен с <a asp-controller="Home" asp-action="PrivacyPolicy" target="_blank">Общите условия за личните данни</a>.</label>
+                    </p>
+
+
+                </fieldset>
+                <div class="btn-group">
+                    <input type="button" class="btn btn--1 btn--prev js-prev" value="Previous" />
+                    <input type="button" onclick="doCheckEgn()" class="btn btn--next js-next" value="Next" />
+                    <input type="submit" class="btn btn--2" value="Submit form" />
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <label>
+                Date of travel: @Model.TripStartDate.ToString("dd-MMM-yyyy") &ensp;
+            </label>
+            <label>Price:  </label>
+            <input value="$@Model.BasePrice.ToString("F2")" disabled="disabled" style="color: #ffffff; font-size:medium; background-color:#34495e;  border: none; border-width:0px" readonly="readonly" type="text" id="total" />
+
+        </div>
+    </footer>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js'></script>
+    <script src='https://use.fontawesome.com/releases/v5.0.4/js/all.js'></script>
+
+    <script src="~/js/js-steps.js"></script>
+
+
+</body>
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<script>
+    function cbclick(e) {
+        e = e || event;
+        var cb = e.srcElement || e.target;
+        if (cb.type !== 'checkbox') { return true; }
+        var cbxs = document.getElementById('radiocb').getElementsByTagName('input'), i = cbxs.length;
+        while (i--) {
+            if (cbxs[i].type && cbxs[i].type == 'checkbox' && cbxs[i].id !== cb.id) {
+                cbxs[i].checked = false;
+            }
+        }
+        //// if the click should always result in a checked checkbox
+        // unconmment this:
+        cb.checked = true;
+    }
+</script>
+
+<script>
+    function checkEgn(egn) {
+        if (egn.length != 10)
+            return false;
+        if (/[^0-9]/.test(egn))
+            return false;
+        var year = Number(egn.slice(0, 2));
+        var month = Number(egn.slice(2, 4));
+        var day = Number(egn.slice(4, 6));
+
+        if (month >= 40) {
+            year += 2000;
+            month -= 40;
+        } else if (month >= 20) {
+            year += 1800;
+            month -= 20;
+        } else {
+            year += 1900;
+        }
+
+        if (!isValidDate(year, month, day))
+            return false;
+
+        var checkSum = 0;
+        var weights = [2, 4, 8, 5, 10, 9, 7, 3, 6];
+
+        for (var ii = 0; ii < weights.length; ++ii) {
+            checkSum += weights[ii] * Number(egn.charAt(ii));
+        }
+
+        checkSum %= 11;
+        checkSum %= 10;
+
+        if (checkSum !== Number(egn.charAt(9)))
+            return false;
+
+        return true;
+
+    }
+
+    function isValidDate(y, m, d) {
+        var date = new Date(y, m - 1, d);
+        return date && (date.getMonth() + 1) == m && date.getDate() == Number(d);
+    }
+
+    function doCheckEgn() {
+        var result = checkEgn(document.getElementById("egn-box").value);
+
+        window.alert(result);
+
+    }
+</script>
+
+<script>
+    function totalIt() {
+        var input = document.getElementsByName("product");
+        var total = @Model.BasePrice;
+        for (var i = 0; i < input.length; i++) {
+            if (input[i].checked) {
+                total += parseFloat(input[i].value);
+            }
+        }
+        document.getElementById("total").value = "$" + total.toFixed(2);
+    }
+</script>

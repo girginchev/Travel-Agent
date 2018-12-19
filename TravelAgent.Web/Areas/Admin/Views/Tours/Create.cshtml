@@ -1,0 +1,297 @@
+﻿@model AddToursFormViewModel
+
+<form method="post" enctype="multipart/form-data" asp-area="Admin" asp-controller="Tours" asp-action="Create">
+    <aside id="colorlib-hero">
+        <div class="flexslider">
+            <ul class="slides">
+                <li style="background-image: url();">
+                    <div class="overlay"></div>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                                <div class="slider-text-inner text-center">
+                                    <div class="form-group">
+                                        <label asp-for="Title"></label>
+                                        <input asp-for="Title" class="form-control" />
+                                        <span asp-validation-for="Title" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-10">
+                                            <p>Upload one Head Picture</p>
+                                            <label asp-for="HeaderImage" />
+                                            <input type="file" id="files" asp-for="HeaderImage" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <div class="colorlib-wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="wrap-division">
+                                <div class="col-md-12 col-md-offset-0 heading2 animate-box">
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label asp-for="StartDate"></label>
+                                        <input asp-for="StartDate" class="form-control" id="pick_date" name="StartDate" onchange="cal()" />
+                                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="EndDate"></label>
+                                        <input asp-for="EndDate" class="form-control" id="drop_date" name="EndDate" onchange="cal()" />
+                                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                                    </div>
+                                    <input type="button" value="Add Tour Days" onclick="addDays()" />
+                                    <div id="firstdiv" class="col-md-12 animate-box">
+                                        <div class="room-wrap">
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group">
+                                                        <div class="col-md-10">
+                                                            <p>Upload picture for the day</p>
+                                                            <label asp-for="TourDayPictures" />
+                                                            <input type="file" id="files" asp-for="TourDayPictures" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="desc">
+                                                        <span class="day-tour">day</span>
+                                                        <div class="form-field">
+                                                            <label asp-for="TourDayTitles"></label>
+                                                            <input asp-for="TourDayTitles" class="form-control" />
+                                                        </div>
+                                                        <div class="form-field">
+                                                            <label asp-for="TourDayDescriptions"></label>
+                                                            <input asp-for="TourDayDescriptions" class="form-control" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input type="button" value="Add a field" onclick="DynamicText()" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Price"></label>
+                                        <input asp-for="Price" class="form-control" />
+                                        <span asp-validation-for="Price" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="BusSeats"></label>
+                                        <input asp-for="BusSeats" class="form-control" />
+                                        <span asp-validation-for="BusSeats" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Nights"></label>
+                                        <input asp-for="Nights" class="form-control" />
+                                        <span asp-validation-for="Nights" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="StartingPoint"></label>
+                                        <input asp-for="StartingPoint" class="form-control" />
+                                        <span asp-validation-for="StartingPoint" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Destination"></label>
+                                        <input asp-for="Destination" class="form-control" />
+                                        <span asp-validation-for="Destination" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="DestinationType"></label>
+                                        <select asp-for="DestinationType" asp-items="Html.GetEnumSelectList<DestinationTypeEnum>()">
+                                            <option selected="selected" value="">Please select</option>
+                                        </select>here
+                                        <span asp-validation-for="DestinationType" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="Description"></label>
+                                        <textarea asp-for="Description" class="form-control"></textarea>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                    <div id="fourthdiv" class="row">
+                                        <div class="col-md-6 col-sm-6">
+                                            <div class="form-group">
+                                                <div class="col-md-10">
+                                                    <label asp-for="AdditionalServicesContents"></label>
+                                                    <input asp-for="AdditionalServicesContents" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6">
+                                            <div class="desc">
+                                                <label asp-for="AdditionalSerivicesPrices"></label>
+                                                <input asp-for="AdditionalSerivicesPrices" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <input type="button" value="Add a field" onclick="DynamicFieldFourth()" />
+                                    </div>
+                                </div>
+                                <div class="col-md-12 animate-box text-center">
+                                    <p><button type="submit" class="btn btn-primary">Add Tour</button></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- SIDEBAR-->
+                <div class="col-md-3">
+                    <div class="sidebar-wrap">
+                        <div class="side search-wrap animate-box">
+                            <h3 class="sidebar-heading">Price Includes</h3>
+                            <div id="seconddiv" class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="form-field">
+                                            <label asp-for="PriceIncludes"></label>
+                                            <textarea asp-for="PriceIncludes" class="form-control"></textarea>
+                                            <span asp-validation-for="PriceIncludes" class="text-danger"></span>
+                                        </div>
+                                        <input type="button" value="Add a field" onclick="DynamicField()" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="side search-wrap animate-box">
+                            <h3 class="sidebar-heading">Price Does Not Includes</h3>
+                            <div id="thirddiv" class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="form-field">
+                                            <label asp-for="PriceDoesNotIncludes"></label>
+                                            <textarea asp-for="PriceDoesNotIncludes" class="form-control"></textarea>
+                                            <span asp-validation-for="PriceDoesNotIncludes" class="text-danger"></span>
+                                        </div>
+                                        <input type="button" value="Add a field" onclick="DynamicFieldSecond()" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="side search-wrap animate-box">
+                            <h3 class="sidebar-heading">Useful Information</h3>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="form-field">
+                                            <label asp-for="UsefulInformation"></label>
+                                            <textarea asp-for="UsefulInformation" class="form-control"></textarea>
+                                            <span asp-validation-for="UsefulInformation" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: '#Description'
+    });</script>
+
+
+
+<script>
+    function DynamicField() {
+        var div = document.createElement('DIV');
+        div.innerHTML = DynamictextField("");
+        document.getElementById("seconddiv").appendChild(div);
+    }
+
+    function DynamictextField(value) {
+        /**/
+        return '<div><div class="col-md-12"><div class="form-group"><div class="form-field"><label name="PriceIncludes"></label><textarea name="PriceIncludes" class="form-control"></textarea><span name="PriceIncludes" class="text-danger"></span></div></div></div><input type="button" onclick="ReTextField(this)" value="Remove"/></div>'
+        /**/
+    }
+
+    function ReTextField(div) {
+        document.getElementById("seconddiv").removeChild(div.parentNode.parentNode);
+    }
+</script>
+
+<script>
+    function DynamicFieldSecond() {
+        var div = document.createElement('DIV');
+        div.innerHTML = DynamictextFieldSecond("");
+        document.getElementById("thirddiv").appendChild(div);
+    }
+
+    function DynamictextFieldSecond(value) {
+        /**/
+        return '<div><div class="col-md-12"><div class="form-group"><div class="form-field"><label name="PriceDoesNotIncludes"></label><textarea name="PriceDoesNotIncludes" class="form-control"></textarea><span name="PriceDoesNotIncludes" class="text-danger"></span></div></div></div><input type="button" onclick="ReTextFieldSecond(this)" value="Remove"/></div>'
+        /**/
+    }
+
+    function ReTextFieldSecond(div) {
+        document.getElementById("thirddiv").removeChild(div.parentNode.parentNode);
+    }
+</script>
+
+<script>
+    function DynamicFieldFourth() {
+        var div = document.createElement('DIV');
+        div.innerHTML = DynamictextFieldFourth("");
+        document.getElementById("fourthdiv").appendChild(div);
+    }
+
+    function DynamictextFieldFourth(value) {
+        /**/
+        return '<div><div class="col-md-6 col-sm-6"><div class="form-group"><div class="col-md-10"><label name="AdditionalServicesContents"></label><input name="AdditionalServicesContents" class="form-control" /></div></div></div><div class="col-md-6 col-sm-6"><div class="desc"><label name="AdditionalSerivicesPrices"></label><input name="AdditionalSerivicesPrices" class="form-control" /></div></div><input type="button" onclick="ReTextFieldFourth(this)" value="Remove"/></div>'
+        /**/
+    }
+
+    function ReTextFieldFourth(div) {
+        document.getElementById("fourthdiv").removeChild(div.parentNode.parentNode);
+    }
+</script>
+
+
+<script type='text/javascript'>
+    function addDays() {
+
+        var startDate = new Date(document.getElementById("drop_date").value);
+        var endDay = new Date(document.getElementById("pick_date").value);
+        var number = parseInt((startDate - endDay) / (24 * 3600 * 1000));
+
+
+        var container = document.getElementById("firstdiv");
+
+        while (container.hasChildNodes()) {
+            container.removeChild(container.lastChild);
+        }
+        for (i = 0; i < number; i++) {
+            container.appendChild(document.createTextNode("Day " + (i + 1)));
+            var division = document.createElement('DIV');
+            division.innerHTML = DynamictextBox("");
+            container.appendChild(division);
+        }
+    }
+
+    function DynamictextBox(value) {
+        /**/
+        return '<div class="col-md-6 col-sm-6"><div class="form-group"><div class="col-md-10"><p>Upload picture for the day</p><label name="TourDayPictures" /><input type="file" id="files" name="TourDayPictures" /></div></div></div><div class="col-md-6 col-sm-6"><div class="desc"><span class="day-tour">day</span><div class="form-field"><label name="TourDayTitles"></label><input name="TourDayTitles" class="form-control" /></div><div class="form-field"><label name="TourDayDescriptions"></label><textarea name="TourDayDescriptions" class="form-control"></textarea></div></div></div>'
+        /**/
+    }
+</script>
+
+
+   @*function DynamictextBox(value) {
+        /**/
+        return '<div class="col-md-6 col-sm-6"><div class="form-group"><div class="col-md-10"><p>Upload picture for the day</p><label name="TourDayPictures" /><input type="file" id="files" name="TourDayPictures" /></div></div></div><div class="col-md-6 col-sm-6"><div class="desc"><span class="day-tour">day</span><label name="TourDayTitles"></label><input name="TourDayTitles" class="form-control" /><label name="TourDayDescriptions"></label><input name="TourDayDescriptions" class="form-control" /></div></div>'
+        /**/
+    }*@

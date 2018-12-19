@@ -1,0 +1,69 @@
+﻿@model ReservationShortDetailsServiceModel
+
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+            <li style="background-image: url(/images/tr10.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                            <div class="slider-text-inner text-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+<div id="colorlib-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 animate-box">
+
+                <h3>Tour: @Model.TourTitle</h3>
+                <h3>Start Date: @Model.TripStartDate</h3>
+                <div class="row form-group">
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label>First Name</label>
+                        <input asp-for="@Model.FirstNameLatin" type="text" disabled="disabled" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label>Last Name</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.LastNameLatin" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @for (int i = 0; i < Model.IncludedAdditionalServices.Count; i++)
+                    {
+                        <div class="col-md-6 padding-bottom">
+                            <label>@Model.IncludedAdditionalServices[i].Content - @Model.IncludedAdditionalServices[i].Price</label>
+                        </div>
+                    }
+                    <div class="col-md-6">
+                        <label>Final Price: @Model.TotalPrice</label>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6 padding-bottom">
+                        <label>Seat Number</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.SeatNumber" class="form-control">
+                    </div>
+                </div>
+                <form method="post">
+                    <div>
+                        <div class="col-md-6">
+                            <label>Confirm Reservation</label>
+                            <input type="checkbox" disabled="disabled" asp-for="@Model.IsFinalized" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,635 @@
+﻿@model ToursIndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+            <li style="background-image: url(images/tr9.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                            <div class="slider-text-inner text-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li style="background-image: url(images/shifaaz-shamoon-465339-unsplash.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                            <div class="slider-text-inner text-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li style="background-image: url(images/simon-migaj-421505-unsplash.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                            <div class="slider-text-inner text-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+
+
+<div id="colorlib-reservation">
+    <div class="row">
+        <div class="search-wrap">
+            <div class="container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#calendar"><i class="flaticon-landmark"></i> Calendar</a></li>
+                    <li><a data-toggle="tab" href="#search"><i class="flaticon-resort"></i> Search</a></li>
+                    <li><a data-toggle="tab" href="#price"><i class="flaticon-boat"></i> Price range</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div id="calendar" class="tab-pane fade in active">
+                    <form method="post" class="colorlib-form">
+                        <div class="row">
+                            @{
+                                var currentMonth = DateTime.UtcNow.Month;
+                            }
+                            @for (int i = currentMonth; i <= 12; i++)
+                            {
+                                <div class="col-md-2">
+                                    <div class="form-control text-center">
+                                        <a asp-controller="Tours" asp-action="ByMonth" asp-route-month="@i">@System.Globalization.DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</a>
+                                    </div>
+                                </div>
+                            }
+                            @for (int i = 1; i < currentMonth; i++)
+                            {
+                                <div class="col-md-2">
+                                    <div class="form-control text-center">
+                                        <a asp-controller="Tours" asp-action="ByMonth" asp-route-month="@i">@System.Globalization.DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </form>
+                </div>
+                <div id="search" class="tab-pane fade">
+                    <form method="post" class="colorlib-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="date">Search:</label>
+                                    <div class="form-field">
+                                        <input type="text" name="searchTerm" class="form-control" placeholder="Search">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" asp-controller="Tours" asp-action="Search" asp-route-searchTerm="searchTerm" value="Search in tours" class="btn btn-primary btn-block">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="price" class="tab-pane fade">
+                    <form method="post" class="colorlib-form">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="price">Price from:</label>
+                                    <div class="form-field">
+                                        <input type="number" name="priceFrom" class="form-control number" placeholder="Price from">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="price">Price to:</label>
+                                    <div class="form-field">
+                                        <input type="number" name="priceTo" class="form-control number" placeholder="Price to">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" asp-controller="Tours" asp-action="SearchByPrice" asp-route-priceFrom="priceFrom" asp-route-priceTo="priceFrom" value="Find Tour" class="btn btn-primary btn-block">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="colorlib-services">
+    <div class="container">
+        <div class="row no-gutters">
+            <div class="col-md-3 animate-box text-center aside-stretch">
+                <div class="services">
+                    <span class="icon">
+                        <i class="flaticon-around"></i>
+                    </span>
+                    <h3>Amazing Travel</h3>
+                    <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate-box text-center">
+                <div class="services">
+                    <span class="icon">
+                        <i class="flaticon-boat"></i>
+                    </span>
+                    <h3>Our Cruises</h3>
+                    <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate-box text-center">
+                <div class="services">
+                    <span class="icon">
+                        <i class="flaticon-car"></i>
+                    </span>
+                    <h3>Book Your Trip</h3>
+                    <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies</p>
+                </div>
+            </div>
+            <div class="col-md-3 animate-box text-center">
+                <div class="services">
+                    <span class="icon">
+                        <i class="flaticon-postcard"></i>
+                    </span>
+                    <h3>Nice Support</h3>
+                    <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="colorlib-tour colorlib-light-grey">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
+                <h2>Popular Destination</h2>
+                <p>We love to tell our successful far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+            </div>
+        </div>
+    </div>
+    <div class="tour-wrap">
+        @foreach (var tour in Model.TopTours)
+        {
+            
+                var base64 = Convert.ToBase64String(tour.HeaderImage);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+            <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="tour-entry animate-box">
+                <div class="tour-img" style="background-image: url(@imgSrc);">
+                </div>
+                <span class="desc">
+                    <span>@tour.TourDaysCount days</span>
+                    <h2>@tour.Title</h2>
+                    <span class="city">@tour.Destination</span>
+                    <span class="price">$@tour.LowestPrice</span>
+                </span>
+            </a>
+        }
+    </div>
+</div>
+
+<div id="colorlib-intro" class="intro-img" style="background-image: url(images/cover-img-1.jpg);" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 animate-box">
+                <div class="intro-desc">
+                    <div class="text-salebox">
+                        <div class="text-lefts">
+                            <div class="sale-box">
+                                <div class="sale-box-top">
+                                    <h2 class="number">45</h2>
+                                    <span class="sup-1">%</span>
+                                    <span class="sup-2">Off</span>
+                                </div>
+                                <h2 class="text-sale">Sale</h2>
+                            </div>
+                        </div>
+                        <div class="text-rights">
+                            <h3 class="title">Just hurry up limited offer!</h3>
+                            <p>Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+                            <p><a href="#" class="btn btn-primary">Book Now</a> <a href="#" class="btn btn-primary btn-outline">Read more</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 animate-box">
+                <div class="video-wrap">
+                    <div class="video colorlib-video" style="background-image: url(images/img_bg_2.jpg);">
+                        <a href="https://vimeo.com/channels/staffpicks/93951774" class="popup-vimeo"><i class="icon-video"></i></a>
+                        <div class="video-overlay"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div id="colorlib-hotel">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
+                <h2>Recommended Hotels</h2>
+                <p>We love to tell our successful far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 animate-box">
+                <div class="owl-carousel">
+                    <div class="item">
+                        <div class="hotel-entry">
+                            <a href="hotels.html" class="hotel-img" style="background-image: url(images/hotel-1.jpg);">
+                                <p class="price"><span>$120</span><small> /night</small></p>
+                            </a>
+                            <div class="desc">
+                                <p class="star"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span> 545 Reviews</p>
+                                <h3><a href="#">Hotel Edison</a></h3>
+                                <span class="place">New York, USA</span>
+                                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="hotel-entry">
+                            <a href="hotels.html" class="hotel-img" style="background-image: url(images/hotel-2.jpg);">
+                                <p class="price"><span>$120</span><small> /night</small></p>
+                            </a>
+                            <div class="desc">
+                                <p class="star"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span> 545 Reviews</p>
+                                <h3><a href="#">Hotel Edison</a></h3>
+                                <span class="place">New York, USA</span>
+                                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="hotel-entry">
+                            <a href="hotels.html" class="hotel-img" style="background-image: url(images/hotel-3.jpg);">
+                                <p class="price"><span>$120</span><small> /night</small></p>
+                            </a>
+                            <div class="desc">
+                                <p class="star"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span> 545 Reviews</p>
+                                <h3><a href="#">Hotel Edison</a></h3>
+                                <span class="place">New York, USA</span>
+                                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="hotel-entry">
+                            <a href="hotels.html" class="hotel-img" style="background-image: url(images/hotel-4.jpg);">
+                                <p class="price"><span>$120</span><small> /night</small></p>
+                            </a>
+                            <div class="desc">
+                                <p class="star"><span><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i><i class="icon-star-full"></i></span> 545 Reviews</p>
+                                <h3><a href="#">Hotel Edison</a></h3>
+                                <span class="place">New York, USA</span>
+                                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+<div id="colorlib-testimony" class="colorlib-light-grey">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
+                <h2>Our Satisfied Guests says</h2>
+                <p>We love to tell our successful far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 animate-box">
+                <div class="owl-carousel2">
+                    <div class="item">
+                        <div class="testimony text-center">
+                            <span class="img-user" style="background-image: url(images/person1.jpg);"></span>
+                            <span class="user">Alysha Myers</span>
+                            <small>Miami Florida, USA</small>
+                            <blockquote>
+                                <p>" A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimony text-center">
+                            <span class="img-user" style="background-image: url(images/person2.jpg);"></span>
+                            <span class="user">James Fisher</span>
+                            <small>New York, USA</small>
+                            <blockquote>
+                                <p>One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimony text-center">
+                            <span class="img-user" style="background-image: url(images/person3.jpg);"></span>
+                            <span class="user">Jacob Webb</span>
+                            <small>Athens, Greece</small>
+                            <blockquote>
+                                <p>Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="colorlib-tour">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center colorlib-heading animate-box">
+                <h2>Most Popular Travel Countries</h2>
+                <p>We love to tell our successful far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="f-tour">
+                    <div class="row row-pb-md">
+                        @if (Model.Bulgaria.Any())
+                        {
+                            <div class="col-md-6">
+                                <div class="row">
+                                    @foreach (var tour in Model.Bulgaria)
+                                    {
+                                        var base64 = Convert.ToBase64String(tour.HeaderImage);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        <div class="col-md-6 animate-box">
+                                            <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="f-tour-img" style="background-image: url(@imgSrc);">
+                                                <div class="desc">
+                                                    <h3>@tour.Destination - @tour.TourDaysCount Days</h3>
+                                                    <p class="price"><span>$@tour.LowestPrice</span> <small>/ person</small></p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6 animate-box">
+                                <div class="desc">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Bulgaria, Europe</h3>
+                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia.</p><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="f-tour">
+                    <div class="row">
+                        @if (Model.Greece.Any())
+                        {
+                            <div class="col-md-6 col-md-push-6">
+                                <div class="row">
+                                    @foreach (var tour in Model.Greece)
+                                    {
+                                        var base64 = Convert.ToBase64String(tour.HeaderImage);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        <div class="col-md-6 animate-box">
+                                            <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="f-tour-img" style="background-image: url(@imgSrc);">
+                                                <div class="desc">
+                                                    <h3>@tour.Destination - @tour.TourDaysCount Days</h3>
+                                                    <p class="price"><span>$@tour.LowestPrice</span> <small>/ person</small></p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6 animate-box col-md-pull-6 text-right">
+                                <div class="desc">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Greece, Europe</h3>
+                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia.</p><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="f-tour">
+                    <div class="row row-pb-md">
+                        @if (Model.Albania.Any())
+                        {
+                            <div class="col-md-6">
+                                <div class="row">
+                                    @foreach (var tour in Model.Albania)
+                                    {
+                                        var base64 = Convert.ToBase64String(tour.HeaderImage);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        <div class="col-md-6 animate-box">
+                                            <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="f-tour-img" style="background-image: url(@imgSrc);">
+                                                <div class="desc">
+                                                    <h3>@tour.Destination - @tour.TourDaysCount Days</h3>
+                                                    <p class="price"><span>$@tour.LowestPrice</span> <small>/ person</small></p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6 animate-box">
+                                <div class="desc">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Albania, Europe</h3>
+                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia.</p><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="f-tour">
+                    <div class="row">
+                        @if (Model.Austria.Any())
+                        {
+                            <div class="col-md-6 col-md-push-6">
+                                <div class="row">
+                                    @foreach (var tour in Model.Austria)
+                                    {
+                                        var base64 = Convert.ToBase64String(tour.HeaderImage);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        <div class="col-md-6 animate-box">
+                                            <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="f-tour-img" style="background-image: url(@imgSrc);">
+                                                <div class="desc">
+                                                    <h3>@tour.Destination - @tour.TourDaysCount Days</h3>
+                                                    <p class="price"><span>$@tour.LowestPrice</span> <small>/ person</small></p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6 animate-box col-md-pull-6 text-right">
+                                <div class="desc">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Austria, Europe</h3>
+                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia.</p><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="f-tour">
+                    <div class="row row-pb-md">
+                        @if (Model.Romania.Any())
+                        {
+                            <div class="col-md-6">
+                                <div class="row">
+                                    @foreach (var tour in Model.Romania)
+                                    {
+                                        var base64 = Convert.ToBase64String(tour.HeaderImage);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        <div class="col-md-6 animate-box">
+                                            <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="f-tour-img" style="background-image: url(@imgSrc);">
+                                                <div class="desc">
+                                                    <h3>@tour.Destination - @tour.TourDaysCount Days</h3>
+                                                    <p class="price"><span>$@tour.LowestPrice</span> <small>/ person</small></p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6 animate-box">
+                                <div class="desc">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Romania, Europe</h3>
+                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia.</p><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="f-tour">
+                    <div class="row">
+                        @if (Model.Croatia.Any())
+                        {
+                            <div class="col-md-6 col-md-push-6">
+                                <div class="row">
+                                    @foreach (var tour in Model.Croatia)
+                                    {
+                                        var base64 = Convert.ToBase64String(tour.HeaderImage);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        <div class="col-md-6 animate-box">
+                                            <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="f-tour-img" style="background-image: url(@imgSrc);">
+                                                <div class="desc">
+                                                    <h3>@tour.Destination - @tour.TourDaysCount Days</h3>
+                                                    <p class="price"><span>$@tour.LowestPrice</span> <small>/ person</small></p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6 animate-box col-md-pull-6 text-right">
+                                <div class="desc">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Croatia, Europe</h3>
+                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia.</p><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="f-tour">
+                    <div class="row row-pb-md">
+                        @if (Model.Serbia.Any())
+                        {
+                            <div class="col-md-6">
+                                <div class="row">
+                                    @foreach (var tour in Model.Serbia)
+                                    {
+                                        var base64 = Convert.ToBase64String(tour.HeaderImage);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        <div class="col-md-6 animate-box">
+                                            <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="f-tour-img" style="background-image: url(@imgSrc);">
+                                                <div class="desc">
+                                                    <h3>@tour.Destination - @tour.TourDaysCount Days</h3>
+                                                    <p class="price"><span>$@tour.LowestPrice</span> <small>/ person</small></p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6 animate-box">
+                                <div class="desc">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Serbia, Europe</h3>
+                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia.</p><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="f-tour">
+                    <div class="row">
+                        @if (Model.Macedonia.Any())
+                        {
+                            <div class="col-md-6 col-md-push-6">
+                                <div class="row">
+                                    @foreach (var tour in Model.Macedonia)
+                                    {
+                                        var base64 = Convert.ToBase64String(tour.HeaderImage);
+                                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                                        <div class="col-md-6 animate-box">
+                                            <a asp-controller="Tours" asp-action="Details" asp-route-id="@tour.Id" asp-route-title="@tour.Title.ToFriendlyUrl()" class="f-tour-img" style="background-image: url(@imgSrc);">
+                                                <div class="desc">
+                                                    <h3>@tour.Destination - @tour.TourDaysCount Days</h3>
+                                                    <p class="price"><span>$@tour.LowestPrice</span> <small>/ person</small></p>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6 animate-box col-md-pull-6 text-right">
+                                <div class="desc">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Macedonia, Europe</h3>
+                                            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia.</p><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

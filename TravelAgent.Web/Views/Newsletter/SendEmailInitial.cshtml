@@ -1,0 +1,30 @@
+﻿@model SubscribersServiceModel
+@{ 
+    Layout = null;
+}
+
+<div class="row" borderstyle="solid">
+    <div class="col-md-12">
+        <h4>
+            Hello!
+            You applied to receive newsletters from our Tour Agency for our new tours, holidays, news and promotions!
+            To be sure, that this registration is send from you, please confirm Your e-mail:
+        </h4>
+        <br />
+        <a class="btn btn-success" href="https://localhost:5001/Newsletter/Confirm?email=@Model.Email&key=@Model.Id">CONFIRM YOUR SUBSCRIPTION</a>
+        <br />
+        <h4>
+            If you have not applied, please do not confirm or <a href="https://localhost:5001/Newsletter/Reject?email=@Model.Email&key=@Model.Id">reject here!</a>
+        </h4>
+        <br />
+    </div>
+    <hr>
+    <div class="col-lg-12">
+        <h5>Travel Agency</h5>
+        <h5>Contact information:</h5>
+        <h5>Phone: 08888888888</h5>
+        <h5>E-mail: girginchev@abv.bg</h5>
+        <h5>www.travelagency.com</h5>
+    </div>
+</div>
+

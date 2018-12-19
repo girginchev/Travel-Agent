@@ -1,0 +1,133 @@
+﻿@model ReservationsDetailsServiceModel
+
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+            <li style="background-image: url(/images/tr10.jpg);">
+                <div class="overlay"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12 slider-text">
+                            <div class="slider-text-inner text-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>
+<div id="colorlib-contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 animate-box">
+
+                <h3>Tour: @Model.TourTitle</h3>
+                <h3>Start Date: @Model.TripStartDate</h3>
+                <h3>Reservation:@Model.Id - Reserved on: @Model.ReservationTime</h3>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <input asp-for="@Model.Email" type="text" disabled="disabled" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <input asp-for="@Model.Phone" type="text" disabled="disabled" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label>First Name</label>
+                        <input asp-for="@Model.FirstNameLatin" type="text" disabled="disabled" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <input asp-for="@Model.FirstNameCyrilic" type="text" disabled="disabled" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label>Surname</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.SurNameLatin" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" disabled="disabled" asp-for="@Model.SurNameCyrilic" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label>Last Name</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.LastNameLatin" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" disabled="disabled" asp-for="@Model.LastNameCyrilic" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label>EGN</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.EGN" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Address</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.Adress" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6 padding-bottom">
+                        <label>Bulgarian Card Id</label>
+                        <input asp-for="@Model.IdCard" type="text" disabled="disabled" class="form-control">
+                    </div>
+                    <div class="col-md-6 padding-bottom">
+                        <label>Id card issued on: </label>
+                        <input asp-for="@Model.IdCardDateOfIssue" type="text" disabled="disabled" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Id card valid till: </label>
+                        <input type="text" disabled="disabled" asp-for="@Model.IdCardValidityDate" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label>Pasport</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.PasportNumber" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Pasport issued on:</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.PasportDateOfIssue" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Pasport valid till:</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.PasportValidityDate" class="form-control">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    @for (int i = 0; i < Model.IncludedAdditionalServices.Count; i++)
+                    {
+                        <div class="col-md-6 padding-bottom">
+                            <label>@Model.IncludedAdditionalServices[i].Content - @Model.IncludedAdditionalServices[i].Price</label>
+                        </div>
+                    }
+                    <div class="col-md-6">
+                        <label>Final Price: @Model.TotalPrice</label>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6 padding-bottom">
+                        <label>Seat Number</label>
+                        <input type="text" disabled="disabled" asp-for="@Model.SeatNumber" class="form-control">
+                    </div>
+                </div>
+                <form method="post">
+                    <div>
+                        <div class="col-md-6">
+                            <label>Confirm Reservation</label>
+                            <input type="checkbox" asp-for="@Model.IsFinalized" class="form-control">
+                            <input type="hidden" asp-for="@Model.Id" value="@Model.Id">
+                        </div>
+                        <div class="form-group text-center">
+                            <input asp-action="Confirm" type="submit" value="Confirm Reservation" class="btn btn-primary">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
