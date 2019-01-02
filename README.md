@@ -1,4 +1,4 @@
-Travel Agent is a commercial project intended for travel agency in process of implementation. 
+Travel Agent is a project intended for travel agency in process of implementation. 
 Deployed for testing thanks for the free hosting from smarterasp.net: http://travelagent-001-site1.etempurl.com/
 
 Used technologies:
